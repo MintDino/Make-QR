@@ -55,10 +55,6 @@
             margin: 10px 0;
             box-sizing: border-box;
         }
-        input[type="color"] {
-            width: 50px;
-            margin-right: 10px;
-        }
         button {
             background-color: #007bff;
             color: white;
@@ -77,6 +73,11 @@
             border: 1px solid #ddd;
             border-radius: 8px;
         }
+        .qr-label {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
         footer {
             background: #f4f4f4;
             padding: 15px;
@@ -93,29 +94,20 @@
         footer a:hover {
             text-decoration: underline;
         }
-        .color-picker-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+        .legal-docs {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #666;
         }
-        .color-picker {
-            width: 48%;
-            text-align: center;
+        .legal-docs a {
+            color: #007bff;
+            text-decoration: none;
         }
-        .reset-button {
-            background-color: #f44336;
-            color: white;
-            border-radius: 8px;
-            padding: 12px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            margin-top: 20px;
-            width: auto;
+        .legal-docs a:hover {
+            text-decoration: underline;
         }
-        .reset-button:hover {
-            background-color: #d32f2f;
-        }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -124,17 +116,26 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
+            overflow: auto;
         }
         .modal-content {
-            background-color: #fff;
-            margin: 5% auto;
+            background-color: #fefefe;
+            margin: 15% auto;
             padding: 20px;
-            border-radius: 8px;
+            border: 1px solid #888;
             width: 80%;
-            max-width: 600px;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+        .modal-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .modal-body {
+            font-size: 16px;
+            margin-bottom: 20px;
         }
         .close {
             color: #aaa;
@@ -143,7 +144,6 @@
             position: absolute;
             top: 10px;
             right: 25px;
-            text-decoration: none;
         }
         .close:hover,
         .close:focus {
@@ -151,27 +151,16 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .about-section, .legal-disclaimer {
-            margin-top: 40px;
-            font-size: 16px;
-            color: #333;
-        }
-        .about-section h3, .legal-disclaimer h3 {
-            font-size: 24px;
-            color: #007bff;
-            margin-bottom: 15px;
-        }
     </style>
 </head>
 <body>
-    <header></header>
+    <header>
         <h1>Make QR</h1>
-        <p>Create highly customizable QR codes for any purpose</p>
+        <h3>About This Tool</h3>
+        <p>Make QR is a simple and user-friendly tool designed to help you create customized QR codes for various use cases such as URLs, emails, phone numbers, and Wi-Fi configurations. You can modify the color, margin size, and error correction level of your QR code. Additionally, it allows you to upload a custom logo to the center of the QR code for branding purposes.</p>
     </header>
     <main>
         <h2>Create Your QR Code</h2>
-        
-        <!-- Content Type -->
         <label for="content-type">Select QR Code Type:</label>
         <select id="content-type" onchange="updateFields()">
             <option value="text" selected>Text / URL</option>
@@ -179,34 +168,21 @@
             <option value="phone">Phone Number</option>
             <option value="wifi">Wi-Fi Configuration</option>
         </select>
-        
-        <!-- Dynamic Input Fields -->
         <div id="input-fields">
             <input type="text" id="text-input" placeholder="Enter text or URL">
         </div>
         
-        <!-- QR Code Customization -->
         <label>Customize QR Code:</label>
-        <div class="color-picker-container">
-            <div class="color-picker">
-                <label for="foreground-color">Foreground Color</label>
-                <input type="color" id="foreground-color" value="#000000">
-            </div>
-            <div class="color-picker">
-                <label for="background-color">Background Color</label>
-                <input type="color" id="background-color" value="#ffffff">
-            </div>
+        <div>
+            <label for="foreground-color">Foreground Color:</label>
+            <input type="color" id="foreground-color" value="#000000">
         </div>
-
-        <label>QR Code Border:</label>
-        <input type="checkbox" id="border-checkbox"> Add Border
-
-        <label>QR Code Rounded Corners:</label>
-        <input type="checkbox" id="rounded-corners-checkbox"> Rounded Corners
-
+        <div>
+            <label for="background-color">Background Color:</label>
+            <input type="color" id="background-color" value="#ffffff">
+        </div>
         <label for="margin">Margin Size:</label>
         <input type="number" id="margin" min="0" max="10" value="4">
-        
         <label for="size-input">Select QR Code Size:</label>
         <select id="size-input">
             <option value="150">150 x 150</option>
@@ -217,48 +193,47 @@
         
         <label for="error-correction">Error Correction Level:</label>
         <select id="error-correction">
-            <option value="L">Low (L)</option>
-            <option value="M" selected>Medium (M)</option>
-            <option value="Q">Quartile (Q)</option>
-            <option value="H">High (H)</option>
+            <option value="L">L (Low)</option>
+            <option value="M">M (Medium)</option>
+            <option value="Q">Q (Quartile)</option>
+            <option value="H">H (High)</option>
         </select>
 
-        <label for="custom-label">Add Custom Label (Optional)</label>
-        <input type="text" id="custom-label" placeholder="Enter label text">
-        
-        <label for="dynamic-link">Dynamic Redirect Link (Optional)</label>
-        <input type="text" id="dynamic-link" placeholder="Enter dynamic link URL">
+        <label for="custom-label">Custom Label:</label>
+        <input type="text" id="custom-label" placeholder="Enter custom label text">
 
-        <label for="logo-upload">Upload Logo (Optional)</label>
+        <label for="redirect-url">Dynamic Redirect URL:</label>
+        <input type="url" id="redirect-url" placeholder="Enter URL for dynamic redirect">
+
+        <label for="logo-upload">Upload Logo (optional):</label>
         <input type="file" id="logo-upload" accept="image/*">
-
+        
         <button onclick="generateQRCode()">Generate QR Code</button>
         <button onclick="downloadQRCode()">Download QR Code</button>
-        <button onclick="downloadQRCodePDF()">Download as PDF</button>
-        <button class="reset-button" onclick="resetFields()">Reset</button>
-        
-        <!-- QR Code Preview -->
-        <div id="qr-code" class="qr-container"></div>
 
-        <div class="about-section">
-            <h3>About This Tool</h3>
-            <p>Make QR is a simple and user-friendly tool designed to help you create customized QR codes for various use cases such as URLs, emails, phone numbers, and Wi-Fi configurations. You can modify the color, margin size, and error correction level of your QR code. Additionally, it allows you to upload a custom logo to the center of the QR code for branding purposes.</p>
+        <div id="qr-code" class="qr-container">
+            <div id="qr-label" class="qr-label"></div>
         </div>
         
-        <footer>
-            <p>&copy; 2024 Mint Dino. All rights reserved.</p>
-            <a href="javascript:void(0)" onclick="openModal('terms-modal')">Terms & Conditions</a> | 
-            <a href="javascript:void(0)" onclick="openModal('privacy-modal')">Privacy Policy</a> | 
-            <a href="javascript:void(0)" onclick="openModal('disclaimer-modal')">Legal Disclaimer</a>
-        </footer>
     </main>
+    <footer>
+        <p>&copy; 2024 Make QR. All rights reserved.</p>
+        <div class="legal-docs">
+            <a href="#" onclick="openModal('termsModal')">Terms & Conditions</a> | 
+            <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a> | 
+            <a href="#" onclick="openModal('legalModal')">Legal Disclaimer</a> | 
+            <a href="#">About</a>
+        </div>
+    </footer>
 
-    <!-- Terms and Conditions Modal -->
-    <div id="terms-modal" class="modal">
+    <!-- Terms Modal -->
+    <div id="termsModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('terms-modal')">&times;</span>
-            <h3>Terms and Conditions</h3>
-            <p>Welcome to Make QR! By using this tool, you agree to the following terms:</p>
+            <span class="close" onclick="closeModal('termsModal')">&times;</span>
+            <div class="modal-header">Terms & Conditions</div>
+            <div class="modal-body">
+                <h3>Terms and Conditions</h3>
+            <p>Welcome to QRGen! By using this tool, you agree to the following terms:</p>
             <ul>
                 <li>This tool is provided "as-is" without any warranties or guarantees.</li>
                 <li>Users are responsible for the content they generate using this tool.</li>
@@ -266,80 +241,49 @@
                 <li>We reserve the right to modify these terms at any time without prior notice.</li>
             </ul>
             <p>If you do not agree with these terms, please refrain from using the tool.</p>
+            </div>
         </div>
     </div>
 
     <!-- Privacy Policy Modal -->
-    <div id="privacy-modal" class="modal">
+    <div id="privacyModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('privacy-modal')">&times;</span>
-            <h3>Privacy Policy</h3>
+            <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+            <div class="modal-header">Privacy Policy</div>
+            <div class="modal-body">
+                <h3>Privacy Policy</h3>
             <p>Your privacy is important to us. Here's how we handle your data:</p>
             <ul>
                 <li>We do not collect or store any data you enter in this tool.</li>
                 <li>All QR codes are generated locally in your browser; no personal data is transmitted.</li>
                 <li>For enhanced functionality, we may collect anonymous usage data, but no personally identifiable information is tracked.</li>
             </ul>
+            </div>
         </div>
     </div>
 
     <!-- Legal Disclaimer Modal -->
-    <div id="disclaimer-modal" class="modal">
+    <div id="legalModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('disclaimer-modal')">&times;</span>
-            <h3>Legal Disclaimer</h3>
+            <span class="close" onclick="closeModal('legalModal')">&times;</span>
+            <div class="modal-header">Legal Disclaimer</div>
+            <div class="modal-body">
+                <h3>Legal Disclaimer</h3>
             <p><strong>jsPDF License</strong>: The jsPDF library used on this website is licensed under the MIT License. You may use this library for both personal and commercial purposes. You can view the full MIT license here: <a href="https://opensource.org/licenses/MIT" target="_blank">jsPDF MIT License</a>.</p>
             <p><strong>QRCode.js License</strong>: The QRCode.js library is also licensed under the MIT License. You may freely use, modify, and distribute this library in your commercial projects. Full details of the license can be found here: <a href="https://opensource.org/licenses/MIT" target="_blank">QRCode.js MIT License</a>.</p>
             <p><strong>Content Responsibility</strong>: You are solely responsible for the content you generate using this tool, including QR codes and any embedded data. We do not store or collect any personal data or generated QR codes unless explicitly stated in our Privacy Policy.</p>
             <p><strong>Commercial Use</strong>: This website and the QR code generation service are available for commercial use. Users may generate QR codes for business purposes, but must ensure that the content they encode complies with applicable laws and does not infringe on any copyrights.</p>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script>
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = "block";
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = "none";
-        }
-
-        function generateQRCode() {
-            // QR Code generation logic
-        }
-
-        function downloadQRCode() {
-            // QR Code download logic
-        }
-
-        function downloadQRCodePDF() {
-            // QR Code PDF download logic
-        }
-
-        function resetFields() {
-            document.getElementById("content-type").value = "text";
-            document.getElementById("text-input").value = "";
-            document.getElementById("foreground-color").value = "#000000";
-            document.getElementById("background-color").value = "#ffffff";
-            document.getElementById("border-checkbox").checked = false;
-            document.getElementById("rounded-corners-checkbox").checked = false;
-            document.getElementById("margin").value = "4";
-            document.getElementById("size-input").value = "200";
-            document.getElementById("error-correction").value = "M";
-            document.getElementById("custom-label").value = "";
-            document.getElementById("dynamic-link").value = "";
-            document.getElementById("logo-upload").value = "";
-            document.getElementById("qr-code").innerHTML = "";
-        }
-
         function updateFields() {
             const contentType = document.getElementById("content-type").value;
             const inputFields = document.getElementById("input-fields");
-
-            // Clear previous input field
             inputFields.innerHTML = "";
-
-            if (contentType === "text" || contentType === "url") {
+            if (contentType === "text") {
                 inputFields.innerHTML = '<input type="text" id="text-input" placeholder="Enter text or URL">';
             } else if (contentType === "email") {
                 inputFields.innerHTML = '<input type="email" id="email-input" placeholder="Enter email address">';
@@ -356,6 +300,96 @@
                     </select>
                 `;
             }
+        }
+
+        function generateQRCode() {
+            const qrContainer = document.getElementById("qr-code");
+            qrContainer.innerHTML = "";
+            const contentType = document.getElementById("content-type").value;
+            let qrData;
+
+            if (contentType === "text") {
+                qrData = document.getElementById("text-input").value;
+            } else if (contentType === "email") {
+                qrData = `mailto:${document.getElementById("email-input").value}`;
+            } else if (contentType === "phone") {
+                qrData = `tel:${document.getElementById("phone-input").value}`;
+            } else if (contentType === "wifi") {
+                const ssid = document.getElementById("wifi-ssid").value;
+                const password = document.getElementById("wifi-password").value;
+                const encryption = document.getElementById("wifi-encryption").value;
+                qrData = `WIFI:S:${ssid};T:${encryption};P:${password};;`;
+            }
+
+            // Check for dynamic redirect URL
+            const redirectUrl = document.getElementById("redirect-url").value;
+            if (redirectUrl) {
+                qrData = redirectUrl; // Overwrites QR data with redirect URL if provided
+            }
+
+            const options = {
+                color: {
+                    dark: document.getElementById("foreground-color").value,
+                    light: document.getElementById("background-color").value,
+                },
+                margin: parseInt(document.getElementById("margin").value, 10),
+                width: parseInt(document.getElementById("size-input").value, 10),
+                errorCorrectionLevel: document.getElementById("error-correction").value,
+            };
+
+            if (document.getElementById("logo-upload").files.length > 0) {
+                const logoFile = document.getElementById("logo-upload").files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const logoData = event.target.result;
+                    QRCode.toCanvas(qrData, options, function(error, canvas) {
+                        if (error) {
+                            console.error(error);
+                        } else {
+                            const ctx = canvas.getContext('2d');
+                            const logo = new Image();
+                            logo.onload = function() {
+                                const logoSize = canvas.width / 5;
+                                ctx.drawImage(logo, (canvas.width - logoSize) / 2, (canvas.height - logoSize) / 2, logoSize, logoSize);
+                            };
+                            logo.src = logoData;
+                            qrContainer.appendChild(canvas);
+                        }
+                    });
+                };
+                reader.readAsDataURL(logoFile);
+            } else {
+                QRCode.toCanvas(qrData, options)
+                    .then(canvas => {
+                        qrContainer.appendChild(canvas);
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            // Add custom label
+            const label = document.getElementById("custom-label").value;
+            const qrLabel = document.getElementById("qr-label");
+            qrLabel.innerHTML = label ? label : '';
+        }
+
+        function downloadQRCode() {
+            const canvas = document.querySelector("#qr-code canvas");
+            if (!canvas) {
+                alert("Please generate a QR code first.");
+                return;
+            }
+            const link = document.createElement("a");
+            link.download = "qr-code.png";
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
         }
     </script>
 </body>
